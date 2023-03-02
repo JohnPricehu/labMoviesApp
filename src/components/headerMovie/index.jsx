@@ -34,8 +34,6 @@ const MovieHeader = (props) => {
       }
   }
 
-  console.log(favourite)
-
   return (
     <Paper component="div" sx={styles.root}>
       <IconButton aria-label="go back">
