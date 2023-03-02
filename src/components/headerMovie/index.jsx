@@ -25,14 +25,16 @@ const MovieHeader = (props) => {
   const movie = props.movie;
   const fmovies = JSON.parse(localStorage.getItem("favourites"));
   // console.log(fmovies.length)
-  const favourite = () => {
+  let favourite = false
     for (let i = 0; i < fmovies.length; i++){
       if (movie.id == fmovies[i].id){
-        return favourite = true
+        favourite=true
       }else{
-        return favourite = false
+        favourite=false
       }
-  }}
+  }
+
+  console.log(favourite)
 
   return (
     <Paper component="div" sx={styles.root}>
