@@ -16,8 +16,8 @@ import AddMovieReviewPage from './pages/addMovieReviewPage'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 360000,
-      refetchInterval: 360000, 
+      staleTime: 1,
+      refetchInterval: 1, 
       refetchOnWindowFocus: false
     },
   },
