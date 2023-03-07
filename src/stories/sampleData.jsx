@@ -1,3 +1,4 @@
+
 export default {
     adult: false,
     backdrop_path: "/5Iw7zQTHVRBOYpA0V6z0yypOPZh.jpg",
@@ -26,25 +27,6 @@ export default {
         name: "Action",
       },
     ],
-    production_countries: [
-        {
-            id: 19,
-            name: "Croatia",
-          },
-          {
-            id: 20,
-            name: "Ireland",
-          },
-          {
-            id: 21,
-            name: "Bolivia",
-          },
-          {
-            id: 22,
-            name: "Mexico",
-          },
-    
-      ],
     homepage:
       "https://www.starwars.com/films/star-wars-episode-viii-the-last-jedi",
     id: 181808,
@@ -97,3 +79,4 @@ export default {
     vote_average: 7,
     vote_count: 9692,
   };
+  
