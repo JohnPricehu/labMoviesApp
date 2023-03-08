@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext  } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Paper from "@mui/material/Paper";
@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
 import Avatar from "@mui/material/Avatar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import { MoviesContext } from "../../contexts/moviesContext";
 
 const styles = {
     root: {  
@@ -23,15 +25,17 @@ const styles = {
 
 const MovieHeader = (props) => {
   const movie = props.movie;
-  const fmovies = JSON.parse(localStorage.getItem("favourites"));
-  // console.log(fmovies.length)
-  let favourite = false
-    for (let i = 0; i < fmovies.length; i++){
-      if (movie.id == fmovies[i].id){
-        favourite=true
-      }else{
-        favourite=false
-      }
+  const { favourites} = useContext(MoviesContext);
+  const { toWatches} = useContext(MoviesContext);
+  if (favourites.find((id) => id === movie.id)) {
+    movie.favourite = true;
+  } else {
+    movie.favourite = false
+  }
+  if (toWatches.find((id) => id === movie.id)) {
+    movie.toWatches = true;
+  } else {
+    movie.toWatches = false
   }
 
   return (
@@ -41,9 +45,16 @@ const MovieHeader = (props) => {
       </IconButton>
       <a >
         { 
-          favourite ? (
+          movie.favourite ? (
             <Avatar sx={styles.avatar}>
               <FavoriteIcon />
+            </Avatar>
+          ) : null
+        }
+        {
+          movie.toWatches ? (
+            <Avatar sx={styles.avatar}>
+              <PlaylistAddIcon />
             </Avatar>
           ) : null
         }
