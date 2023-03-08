@@ -6,7 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
@@ -25,30 +25,24 @@ const styles = {
   },
 };
 
-export default function MovieCard({ movie, action }) {
+export default function UpcomingMovieCard({ movie, action }) {
+  const { toWatches, addToWatches } = useContext(MoviesContext);
 
-  const { favourites, addToFavourites } = useContext(MoviesContext);
-
-  
-  if (favourites.find((id) => id === movie.id)) {
-    movie.favourite = true;
+  if (toWatches.find((id) => id === movie.id)) {
+    movie.toWatches = true;
   } else {
-    movie.favourite = false
+    movie.toWatches = false
   }
 
-  // const handleAddToFavourite = (e) => {
-  //   e.preventDefault();
-  //   addToFavourites(movie);
-  // }; 
 
   return (
     <Card sx={styles.card}>
           <CardHeader
       sx={styles.header}
       avatar={
-        movie.favourite ? (
+        movie.toWatches ? (
           <Avatar sx={styles.avatar}>
-            <FavoriteIcon />
+            <PlaylistAddIcon />
           </Avatar>
         ) : null
       }

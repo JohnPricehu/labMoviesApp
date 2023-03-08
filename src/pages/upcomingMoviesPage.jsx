@@ -1,5 +1,5 @@
 import React from "react";
-import PageTemplate from "../components/templateMovieListPage";
+import PageTemplate from "../components/templateUpcomingMovieListPage";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import { getUpcomingMovies } from "../api/tmdb-api";
@@ -8,7 +8,7 @@ import MovieFilterUI, {
   titleFilter,
   genreFilter,
 } from "../components/movieFilterUI";
-import AddToFavouritesIcon from '../components/cardIcons/addToFavourites'
+import AddToPlaylistAddIcon from '../components/cardIcons/addToWatch'
 
 
 const titleFiltering = {
@@ -53,10 +53,10 @@ const UpcomingMoviesPage = (props) => {
   return (
     <>
       <PageTemplate
-        title="Discover Movies"
+        title="Upcoming Movies"
         movies={displayedMovies}
         action={(movie) => {
-          return <AddToFavouritesIcon movie={movie} />
+          return <AddToPlaylistAddIcon movie={movie} />
         }}
       />
       <MovieFilterUI
