@@ -16,6 +16,7 @@ import { UserProvider } from './contexts/UserContext';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ProtectedRoute from "./components/ProtectedRoute"; 
+import ActorPage from "./pages/actorDetailsPage";
 
 
 const queryClient = new QueryClient({
@@ -41,12 +42,14 @@ const App = () => {
               <Route path="*" element={<Navigate to="/login" />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/actors/:id" element={<ActorPage />} />
               <Route element={<ProtectedRoute />}>
                 <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
                 <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
                 <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
                 <Route path="/movies/mustWatches" element={<MustWatchMoviesPage />} />
                 <Route path="/movies/:id" element={<MoviePage />} />
+
                 <Route path="/reviews/:id" element={<MovieReviewPage/>} />
               </Route>
             </Routes>       
