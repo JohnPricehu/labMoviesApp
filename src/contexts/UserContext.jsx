@@ -11,10 +11,10 @@ export const UserProvider = ({ children }) => {
       setUser(session?.user ?? null);
     };
   
-    // 监听认证状态变化
+    // Listening for authentication status changes
     const { data: authListener } = supabase.auth.onAuthStateChange(handleSession);
   
-    // 初始化用户会话
+    // Initialising user sessions
     handleSession(null, () => supabase.auth.session());
   
     return () => {
@@ -29,3 +29,5 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+export default UserProvider;
