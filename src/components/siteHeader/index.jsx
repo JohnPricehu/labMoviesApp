@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -11,6 +11,8 @@ import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { UserContext } from "../../contexts/UserContext";
+import supabase from "../../supabaseClient";
 
 const styles = {
   title: {
@@ -30,6 +32,7 @@ const SiteHeader = () => {
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  const { user } = useContext(UserContext);
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -47,6 +50,11 @@ const SiteHeader = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
   return (
     <>
       <AppBar sx={styles.appbar} position="fixed" elevation={0} color="primary">
@@ -57,6 +65,11 @@ const SiteHeader = () => {
           <Typography variant="h6" sx={styles.title}>
             All you ever wanted to know about Movies!
           </Typography>
+          {user && (
+            <Typography variant="subtitle1">
+              Welcome {user.email}
+            </Typography>
+          )}
           {isMobile ? (
             <>
               <IconButton
@@ -96,24 +109,27 @@ const SiteHeader = () => {
             </>
           ) : (
             <>
-              {menuOptions.map((opt) => (
-                <Button
-                  key={opt.label}
-                  color="inherit"
-                  onClick={() => handleMenuSelect(opt.path)}
-                >
-                  {opt.label}
-                </Button>
-              ))}
-            </>
+            {menuOptions.map((opt) => (
+            <Button
+              key={opt.label}
+              color="inherit"
+              onClick={() => handleMenuSelect(opt.path)}
+            >
+              {opt.label}
+            </Button>
+          ))}
+          {user && (
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
           )}
-        </Toolbar>
-      </AppBar>
-      <Offset />
-
-      {/* <div className={classes.offset} /> */}
-    </>
-  );
+        </>
+      )}
+    </Toolbar>
+  </AppBar>
+  <Offset />
+</>
+);
 };
 
 export default SiteHeader;

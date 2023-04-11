@@ -15,7 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    const { error } = await supabase.auth.signIn({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       console.error('Error logging in:', error.message);
     } else {
