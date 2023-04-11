@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { UserContext } from "../../contexts/UserContext";
 import supabase from "../../supabaseClient";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const styles = {
   title: {
@@ -119,10 +120,10 @@ const SiteHeader = () => {
             </Button>
           ))}
           {user && (
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
-          )}
+                <IconButton color="inherit" onClick={handleLogout}>
+                  <ExitToAppIcon />
+                </IconButton>
+              )}
         </>
       )}
     </Toolbar>
