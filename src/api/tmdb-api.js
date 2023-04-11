@@ -114,7 +114,7 @@ export const getMovies = () => {
     )
       .then((res) => res.json())
       .then((json) => {
-        return json;
+        return json.results;
       })
       .catch((error) => {
         throw error

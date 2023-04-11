@@ -12,6 +12,7 @@ import Drawer from "@mui/material/Drawer";
 import MovieReviews from '../movieReviews';
 import { Link } from "react-router-dom";
 import MovieCastList from "../movieCast";
+import SimilarMovies from "../similarMovies";
 
 const styles = {
   chipSet: {
@@ -35,26 +36,6 @@ const styles = {
 
 const MovieDetails = ( {movie}) => {
   const [drawerOpen, setDrawerOpen] = useState(false); // New
-  const [cast, setCast] = useState([]);
-  const [similarMovies, setSimilarMovies] = useState([]);
-
-  useEffect(() => {
-    getMovieCast(movie.id)
-      .then((data) => {
-        setCast(data.cast);
-      })
-      .catch((error) => {
-        console.error("Error fetching movie cast:", error);
-      });
-
-    getSimilarMovies(movie.id)
-      .then((data) => {
-        setSimilarMovies(data.results);
-      })
-      .catch((error) => {
-        console.error("Error fetching similar movies:", error);
-      });
-  }, [movie.id]);
 
   return (
     <>
@@ -94,22 +75,12 @@ const MovieDetails = ( {movie}) => {
         </Typography>
         <MovieCastList movie={movie} />
       </Paper>
-      <div>
-        <Typography variant="h5" component="h3">
-          Similar Movies
+      <Paper>
+        <Typography variant="h6" component="h6" padding={2}>
+          Similar movies
         </Typography>
-        <div>
-          {similarMovies.map((similarMovie) => (
-            <Link key={similarMovie.id} to={`/movie/${similarMovie.id}`}>
-              <img
-                src={`https://image.tmdb.org/t/p/w185${similarMovie.poster_path}`}
-                alt={similarMovie.title}
-              />
-              <Typography>{similarMovie.title}</Typography>
-            </Link>
-          ))}
-        </div>
-      </div>
+        <SimilarMovies movie={movie} />
+      </Paper>
       <Fab    
         color="secondary"
         variant="extended"
