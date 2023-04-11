@@ -17,6 +17,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ProtectedRoute from "./components/ProtectedRoute"; 
 import ActorPage from "./pages/actorDetailsPage";
+import ActorsPage from "./pages/actorsPage";
+import ActorsContextProvider from "./contexts/actorsContext";
 
 
 const queryClient = new QueryClient({
@@ -36,23 +38,25 @@ const App = () => {
       <BrowserRouter>
       <UserProvider>
         <SiteHeader />      {/* New Header  */}
-          <MoviesContextProvider>        
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="*" element={<Navigate to="/login" />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/actors/:id" element={<ActorPage />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
-                <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
-                <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
-                <Route path="/movies/mustWatches" element={<MustWatchMoviesPage />} />
-                <Route path="/movies/:id" element={<MoviePage />} />
-
-                <Route path="/reviews/:id" element={<MovieReviewPage/>} />
-              </Route>
-            </Routes>       
+          <MoviesContextProvider>
+           <ActorsContextProvider>      
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="*" element={<Navigate to="/login" />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/actors/:id" element={<ActorPage />} />
+                <Route path="/actors" element={<ActorsPage />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
+                  <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
+                  <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+                  <Route path="/movies/mustWatches" element={<MustWatchMoviesPage />} />
+                  <Route path="/movies/:id" element={<MoviePage />} />
+                  <Route path="/reviews/:id" element={<MovieReviewPage/>} />
+                </Route>
+              </Routes> 
+            </ActorsContextProvider>        
           </MoviesContextProvider>
         </UserProvider>
       </BrowserRouter>
