@@ -19,6 +19,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ActorPage from "./pages/actorDetailsPage";
 import ActorsPage from "./pages/actorsPage";
 import ActorsContextProvider from "./contexts/actorsContext";
+import FavouriteActorsPage from "./pages/favouriteActorsPage";
 
 
 const queryClient = new QueryClient({
@@ -45,7 +46,6 @@ const App = () => {
                 <Route path="*" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/actors/:id" element={<ActorPage />} />
                 <Route path="/actors" element={<ActorsPage />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
@@ -54,6 +54,8 @@ const App = () => {
                   <Route path="/movies/mustWatches" element={<MustWatchMoviesPage />} />
                   <Route path="/movies/:id" element={<MoviePage />} />
                   <Route path="/reviews/:id" element={<MovieReviewPage/>} />
+                  <Route path="/actors/:id" element={<ActorPage />} />
+                  <Route path="/actors/favourites" element={<FavouriteActorsPage />} />
                 </Route>
               </Routes> 
             </ActorsContextProvider>        

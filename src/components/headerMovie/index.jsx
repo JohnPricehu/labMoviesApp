@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
 import Avatar from "@mui/material/Avatar";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAdd";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import { MoviesContext } from "../../contexts/moviesContext";
 
 const styles = {
