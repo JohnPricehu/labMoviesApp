@@ -88,6 +88,35 @@ export const getMovies = () => {
       .then((json) => {
         // console.log(json.results);
         return json.results;
-      });
+      })
+      .catch((error) => {
+        throw error
+     });
   };
   
+  export const getMovieCast = (id) => {
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    )
+      .then((res) => res.json())
+      .then((json) => {
+        // console.log(json.results);
+        return json.cast;
+      })
+      .catch((error) => {
+        throw error
+     });
+  };
+
+  export const getSimilarMovies = (id) => {
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+    )
+      .then((res) => res.json())
+      .then((json) => {
+        return json;
+      })
+      .catch((error) => {
+        throw error
+     });
+  };
