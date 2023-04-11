@@ -2,6 +2,7 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
+import ActorMoviesList from "../actorMovies";
 
 const styles = {
   chipSet: {
@@ -39,6 +40,12 @@ const ActorDetails = ({ actor }) => {
         <li>
           <Chip label={actor.place_of_birth} />
         </li>
+      </Paper>
+      <Paper>
+        <Typography variant="h6" component="h6" padding={2}>
+          Movies
+        </Typography>
+        <ActorMoviesList actor={actor } />
       </Paper>
     </>
   );
