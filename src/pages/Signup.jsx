@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import supabase from '../supabaseClient';
+import { signUp } from '../supabaseClient';
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await signUp(email, password);
     if (error) {
       console.error('Error signing up:', error.message);
     } else {

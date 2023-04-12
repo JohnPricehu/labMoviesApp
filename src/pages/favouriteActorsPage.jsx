@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageTemplate from "../components/templateActorListPage";
 import { ActorsContext } from "../contexts/actorsContext";
 import { useQueries } from "react-query";
@@ -7,6 +7,8 @@ import Spinner from "../components/spinner";
 import useFiltering from "../hooks/useFiltering";
 import ActorFilterUI, { nameFilter } from "../components/actorFilterUI";
 import RemoveFromFavouriteActors from "../components/cardIcons/removeFromFavouriteActors";
+import { UserContext } from "../contexts/UserContext";
+import { getFavouriteActors } from "../supabaseClient";
 
 const nameFiltering = {
   name: "name",
@@ -15,11 +17,27 @@ const nameFiltering = {
 };
 
 const FavouriteActorsPage = () => {
-  const { favouriteActors: actorIds } = useContext(ActorsContext);
+  const { user, setFavouriteActors } = useContext(UserContext);
+  const [actorIds, setActorIds] = useState([]);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [nameFiltering]
   );
+
+  useEffect(() => {
+    const fetchFavouriteActors = async () => {
+      const { data, error } = await getFavouriteActors(user.email);
+      if (error) {
+        console.error("Error fetching favourite actors:", error);
+      } else {
+        setActorIds(data.map((entry) => entry.actor_id));
+      }
+    };
+
+    if (user) {
+      fetchFavouriteActors();
+    }
+  }, [user, setFavouriteActors]);
 
   // Create an array of queries and run them in parallel.
   const favouriteActorQueries = useQueries(

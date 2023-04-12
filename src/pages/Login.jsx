@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import supabase from '../supabaseClient';
+import { signIn } from '../supabaseClient';
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await signIn(email, password);
     if (error) {
       console.error('Error logging in:', error.message);
     } else {

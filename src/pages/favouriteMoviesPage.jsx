@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
@@ -8,6 +8,8 @@ import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter } from "../components/movieFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
+import { UserContext } from "../contexts/UserContext";
+import { getFavouriteMovies } from "../supabaseClient";
 
 const titleFiltering = {
   name: "title",
@@ -27,12 +29,28 @@ export const genreFiltering = {
 };
 
 const FavouriteMoviesPage = () => {
-  const { favourites: movieIds } = useContext(MoviesContext);
+  const { user, setFavouriteMovies } = useContext(UserContext);
+  const [movieIds, setMovieIds] = useState([]);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
   );
 
+  useEffect(() => {
+    const fetchFavouriteMovies = async () => {
+      const { data, error } = await getFavouriteMovies(user.email);
+      if (error) {
+        console.error("Error fetching favourite movies:", error);
+      } else {
+        setMovieIds(data.map((entry) => entry.movie_id));
+      }
+    };
+
+    if (user) {
+      fetchFavouriteMovies();
+    }
+  }, [user, setFavouriteMovies]);
+  
   // Create an array of queries and run them in parallel.
   const favouriteMovieQueries = useQueries(
     movieIds.map((movieId) => {

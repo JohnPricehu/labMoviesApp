@@ -1,18 +1,30 @@
 import React, { useContext } from "react";
-import { ActorsContext } from "../../contexts/actorsContext";
+import { UserContext } from "../../contexts/UserContext";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { addActorToFavourites } from "../../supabaseClient";
 
 const AddToFavouriteActorsIcon = ({ actor }) => {
-  const context = useContext(ActorsContext);
+  const { user, favouriteActors, setFavouriteActors } = useContext(UserContext);
 
-  const onUserSelect = (e) => {
+  const onUserSelect = async (e) => {
     e.preventDefault();
-    context.addToFavouriteActors(actor);
+    setFavouriteActors([...favouriteActors, actor]);
+
+    // Save the updated favorite actors list to Supabase
+    try {
+      const { data, error } = await addActorToFavourites(user.email, actor.id);
+      if (error) {
+        throw error;
+      }
+      console.log("Actor added to favourites:", data);
+    } catch (error) {
+      console.error("Error saving favorite actor to Supabase:", error);
+    }
   };
-  
+
   return (
-    <IconButton aria-label="add to favorites" onClick={onUserSelect}>
+    <IconButton aria-label="add to favorite actors" onClick={onUserSelect}>
       <FavoriteIcon color="primary" fontSize="large" />
     </IconButton>
   );
