@@ -112,5 +112,25 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
   
     return { data, error };
   };
+
+  export async function checkMovieInFavourites(email, movieId) {
+    try {
+      const { data, error } = await supabase
+        .from("favourite_movies")
+        .select("movie_id")
+        .eq("user_email", email)
+        .eq("movie_id", movieId);
+  
+      if (error) {
+        throw error;
+      }
+  
+      return data.length > 0;
+    } catch (error) {
+      console.error("Error checking movie in favourites:", error);
+      return false;
+    }
+  }
+  
   
   export default supabase;
