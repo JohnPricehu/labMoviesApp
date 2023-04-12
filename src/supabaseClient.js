@@ -131,6 +131,25 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
       return false;
     }
   }
+
+  export async function checkActorInFavourites(email, actorId) {
+    try {
+      const { data, error } = await supabase
+        .from("favourite_actors")
+        .select("actor_id")
+        .eq("user_email", email)
+        .eq("actor_id", actorId);
+  
+      if (error) {
+        throw error;
+      }
+  
+      return data.length > 0;
+    } catch (error) {
+      console.error("Error checking actor in favourites:", error);
+      return false;
+    }
+  }
   
   
   export default supabase;
