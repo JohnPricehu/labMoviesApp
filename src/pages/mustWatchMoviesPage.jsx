@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageTemplate from "../components/templateUpcomingMovieListPage";
-import { MoviesContext } from "../contexts/moviesContext";
 import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
@@ -8,6 +7,8 @@ import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter } from "../components/movieFilterUI";
 import RemoveFromMustWatches from "../components/cardIcons/removeFromMustWatches";
 import WriteReview from "../components/cardIcons/writeReview";
+import { UserContext } from "../contexts/UserContext";
+import { getMustWatchMovies } from "../supabaseClient";
 
 const titleFiltering = {
   name: "title",
@@ -27,12 +28,27 @@ export const genreFiltering = {
 };
 
 const MustWatchMoviesPage = () => {
-  const { toWatches: movieIds } = useContext(MoviesContext);
+  const { user, setMustWatchMovies } = useContext(UserContext);
+  const [movieIds, setMovieIds] = useState([]);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
   );
 
+  useEffect(() => {
+    const fetchMustWatchMovies = async () => {
+      const { data, error } = await getMustWatchMovies(user.email);
+      if (error) {
+        console.error("Error fetching must watch movies:", error);
+      } else {
+        setMovieIds(data.map((entry) => entry.movie_id));
+      }
+    };
+
+    if (user) {
+      fetchMustWatchMovies();
+    }
+  }, [user, setMustWatchMovies]);
   // Create an array of queries and run them in parallel.
   const mustWatchMovieQueries = useQueries(
     movieIds.map((movieId) => {

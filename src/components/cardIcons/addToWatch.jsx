@@ -1,18 +1,30 @@
 import React, { useContext } from "react";
-import { MoviesContext } from "../../contexts/moviesContext";
+import { UserContext } from "../../contexts/UserContext";
 import IconButton from "@mui/material/IconButton";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import { addMovieToMustWatches } from "../../supabaseClient";
 
 const AddToPlaylistAddIcon = ({ movie }) => {
-  const context = useContext(MoviesContext);
+  const { user, mustWatchMovies, setMustWatchMovies } = useContext(UserContext);
 
-  const onUserSelect = (e) => {
+  const onUserSelect = async (e) => {
     e.preventDefault();
-    context.addToWatches(movie);
+    setMustWatchMovies([...mustWatchMovies, movie]);
+
+    // Save the updated favorite movies list to Supabase
+    try {
+      const { data, error } = await addMovieToMustWatches(user.email, movie.id);
+      if (error) {
+        throw error;
+      }
+      console.log("Movie added to favourites:", data);
+    } catch (error) {
+      console.error("Error saving favorite movie to Supabase:", error);
+    }
   };
 
   return (
-    <IconButton aria-label="add to watch" onClick={onUserSelect}>
+    <IconButton aria-label="add to must watches" onClick={onUserSelect}>
       <PlaylistAddIcon color="primary" fontSize="large" />
     </IconButton>
   );

@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
   const [favouriteActors, setFavouriteActors] = useState([]);
+  const [mustWatchMovies, setMustWatchMovies] = useState([]);
 
   useEffect(() => {
     const handleSession = async (event, session) => {
@@ -20,15 +21,22 @@ export const UserProvider = ({ children }) => {
           .select('*')
           .eq('user_email', currentUser.email);
 
+          const { data:   mmoviesData } = await supabase
+          .from('mustwatch_movies')
+          .select('*')
+          .eq('user_email', currentUser.email);
+
         const { data: actorsData } = await supabase
           .from('favourite_actors')
           .select('*')
           .eq('user_email', currentUser.email);
 
         setFavouriteMovies(moviesData ?? []);
+        setMustWatchMovies(mmoviesData ?? []);
         setFavouriteActors(actorsData ?? []);
       } else {
         setFavouriteMovies([]);
+        setMustWatchMovies([]);
         setFavouriteActors([]);
       }
     };
@@ -45,7 +53,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, favouriteMovies, setFavouriteMovies, favouriteActors, setFavouriteActors }}>
+    <UserContext.Provider value={{ user, favouriteMovies, setFavouriteMovies, mustWatchMovies, setMustWatchMovies, favouriteActors, setFavouriteActors }}>
       {children}
     </UserContext.Provider>
   );

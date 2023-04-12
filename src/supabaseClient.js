@@ -32,8 +32,15 @@ export const addMovieToFavourites = async (userEmail, movieId) => {
       .insert([{ user_email: userEmail, movie_id: movieId }]);
     return { data, error };
   };
+
+export const addMovieToMustWatches = async (userEmail, movieId) => {
+    const { data, error } = await supabase
+      .from('mustwatch_movies')
+      .insert([{ user_email: userEmail, movie_id: movieId }]);
+    return { data, error };
+  };
   
-  export const removeMovieFromFavourites = async (userEmail, movieId) => {
+export const removeMovieFromFavourites = async (userEmail, movieId) => {
     const { data, error } = await supabase
       .from('favourite_movies')
       .delete()
@@ -41,15 +48,24 @@ export const addMovieToFavourites = async (userEmail, movieId) => {
       .eq('movie_id', movieId);
     return { data, error };
   };
+
+  export const removeMovieFromMustWatches = async (userEmail, movieId) => {
+    const { data, error } = await supabase
+      .from('mustwatch_movies')
+      .delete()
+      .eq('user_email', userEmail)
+      .eq('movie_id', movieId);
+    return { data, error };
+  };
   
-  export const addActorToFavourites = async (userEmail, actorId) => {
+export const addActorToFavourites = async (userEmail, actorId) => {
     const { data, error } = await supabase
       .from('favourite_actors')
       .insert([{ user_email: userEmail, actor_id: actorId }]);
     return { data, error };
   };
   
-  export const removeActorFromFavourites = async (userEmail, actorId) => {
+export const removeActorFromFavourites = async (userEmail, actorId) => {
     const { data, error } = await supabase
       .from('favourite_actors')
       .delete()
@@ -66,6 +82,19 @@ export const addMovieToFavourites = async (userEmail, movieId) => {
   
     if (error) {
       console.error('getFavouriteMovies error:', error, 'Status:', status);
+    }
+  
+    return { data, error };
+  };
+
+  export const getMustWatchMovies = async (userEmail) => {
+    const { data, error, status } = await supabase
+      .from('mustwatch_movies')
+      .select('movie_id')
+      .eq('user_email', userEmail);
+  
+    if (error) {
+      console.error('getMustWatchMovies error:', error, 'Status:', status);
     }
   
     return { data, error };
