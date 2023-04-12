@@ -1,4 +1,4 @@
-import React, { useContext  } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -15,6 +15,9 @@ import img from '../../images/film-poster-placeholder.png'
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { MoviesContext } from "../../contexts/moviesContext";
+import { UserContext } from "../../contexts/UserContext";
+import { checkMovieInMustWatches } from "../../supabaseClient";
+
 
 
 const styles = {
@@ -27,31 +30,40 @@ const styles = {
 
 export default function UpcomingMovieCard({ movie, action }) {
   const { toWatches, addToWatches } = useContext(MoviesContext);
+  const { user } = useContext(UserContext);
+  const [isInMustWatches, setIsInMustWatches] = useState(false);
 
-  if (toWatches.find((id) => id === movie.id)) {
-    movie.toWatches = true;
-  } else {
-    movie.toWatches = false
-  }
+  useEffect(() => {
+    const checkMustWatches = async () => {
+      if (user) {
+        const isInList = await checkMovieInMustWatches(user.email, movie.id);
+        setIsInMustWatches(isInList);
+      }
+    };
+
+    checkMustWatches();
+  }, [user, movie.id]);
+
 
 
   return (
     <Card sx={styles.card}>
-          <CardHeader
-      sx={styles.header}
-      avatar={
-        movie.toWatches ? (
-          <Avatar sx={styles.avatar}>
-            <PlaylistAddCheckIcon />
-          </Avatar>
-        ) : null
-      }
-      title={
-        <Typography variant="h5" component="p">
-          {movie.title}{" "}
-        </Typography>
-      }
-    />
+      <CardHeader
+        sx={styles.header}
+        avatar={
+          isInMustWatches ? (
+            <Avatar sx={styles.avatar}>
+              <PlaylistAddCheckIcon />
+            </Avatar>
+          ) : null
+        }
+        title={
+          <Typography variant="h5" component="p">
+            {movie.title}{" "}
+          </Typography>
+        }
+      />
+
 
       <CardMedia
         sx={styles.media}
