@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { signIn } from '../supabaseClient';
 import {
   Box,
@@ -13,13 +13,14 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async () => {
     const { error } = await signIn(email, password);
     if (error) {
       console.error('Error logging in:', error.message);
     } else {
-      navigate('/');
+      navigate(location.state?.from || '/', { replace: true });
     }
   };
 

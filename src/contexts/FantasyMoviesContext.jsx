@@ -18,7 +18,7 @@ export const FantasyMoviesProvider = ({ children }) => {
   }, []);
 
   return (
-    <FantasyMoviesContext.Provider value={{ movies }}>
+    <FantasyMoviesContext.Provider value={{ movies, setMovies }}>
       {children}
     </FantasyMoviesContext.Provider>
   );

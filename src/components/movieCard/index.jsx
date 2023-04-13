@@ -17,6 +17,8 @@ import { MoviesContext } from "../../contexts/moviesContext";
 import { UserContext } from "../../contexts/UserContext";
 import { checkMovieInFavourites } from "../../supabaseClient";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 
 const styles = {
   card: { maxWidth: 345 },
@@ -31,6 +33,7 @@ export default function MovieCard({
   action,
   displayRuntime = false,
   fantasyMovie = false,
+  onDelete,
 }) {
   const { addToFavourites } = useContext(MoviesContext);
   const { user } = useContext(UserContext);
@@ -39,6 +42,12 @@ export default function MovieCard({
   const movieDetailsUrl = fantasyMovie
   ? `/fantasy/${movie.id}`
   : `/movies/${movie.id}`;
+  
+  const handleDelete = async () => {
+    if (onDelete) {
+      onDelete(movie.id);
+    }
+  };
 
   useEffect(() => {
     const fetchFavouriteStatus = async () => {
@@ -111,6 +120,18 @@ export default function MovieCard({
             More Info ...
           </Button>
         </Link>
+
+        {onDelete && (
+          <Button
+            variant="outlined"
+            size="medium"
+            color="error"
+            onClick={handleDelete}
+            startIcon={<DeleteIcon />}
+          >
+            Delete
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

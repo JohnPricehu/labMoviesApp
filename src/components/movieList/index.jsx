@@ -2,7 +2,7 @@ import React from "react";
 import Movie from "../movieCard";
 import Grid from "@mui/material/Grid";
 
-const MovieList = ({ movies, action, displayRuntime, fantasyMovie }) => {
+const MovieList = ({ movies, action, displayRuntime, fantasyMovie , onDelete}) => {
   if (!movies) {
     return <h1>No movies found.</h1>;
   }
@@ -15,6 +15,7 @@ const MovieList = ({ movies, action, displayRuntime, fantasyMovie }) => {
         action={action}
         displayRuntime={displayRuntime}
         fantasyMovie={fantasyMovie}
+        onDelete={onDelete}
       />
     </Grid>
   ));
