@@ -170,5 +170,29 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
     }
   }
   
+  export const createFantasyMovie = async (movieData) => {
+    const { data, error } = await supabase.from("movies").insert([movieData]);
+    return { data, error };
+  };
+
+
+  export const uploadPoster = async (file) => {
+    const fileName = `${Date.now()}-${file.name}`;
+    const { data, error } = await supabase.storage
+      .from('movie-posters')
+      .upload(fileName, file);
+  
+    if (error) {
+      console.error('Error uploading poster:', error);
+      return { error };
+    }
+  
+    const baseUrl = `${SUPABASE_URL}/storage/v1/object/public`;
+    const posterUrl = `${baseUrl}/movie-posters/${fileName}`;
+    return { posterUrl };
+  };
+  
+  
+  
   
   export default supabase;
