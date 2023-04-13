@@ -191,6 +191,17 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
     const posterUrl = `${baseUrl}/movie-posters/${fileName}`;
     return { posterUrl };
   };
+
+  export const fetchMovies = async () => {
+    const { data, error } = await supabase.from("movies").select("*");
+  
+    if (error) {
+      console.error("Error fetching movies:", error);
+      return { error };
+    }
+  
+    return { data };
+  };
   
   
   

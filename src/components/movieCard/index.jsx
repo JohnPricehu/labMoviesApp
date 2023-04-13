@@ -16,6 +16,7 @@ import Avatar from "@mui/material/Avatar";
 import { MoviesContext } from "../../contexts/moviesContext";
 import { UserContext } from "../../contexts/UserContext";
 import { checkMovieInFavourites } from "../../supabaseClient";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const styles = {
   card: { maxWidth: 345 },
@@ -25,10 +26,19 @@ const styles = {
   },
 };
 
-export default function MovieCard({ movie, action }) {
+export default function MovieCard({
+  movie,
+  action,
+  displayRuntime = false,
+  fantasyMovie = false,
+}) {
   const { addToFavourites } = useContext(MoviesContext);
   const { user } = useContext(UserContext);
   const [isFavourite, setIsFavourite] = useState(false);
+
+  const movieDetailsUrl = fantasyMovie
+  ? `/fantasy/${movie.id}`
+  : `/movies/${movie.id}`;
 
   useEffect(() => {
     const fetchFavouriteStatus = async () => {
@@ -58,15 +68,17 @@ export default function MovieCard({ movie, action }) {
           </Typography>
         }
       />
-      <Link to={`/movies/${movie.id}`}>
-        <CardMedia
-          sx={styles.media}
-          image={
-            movie.poster_path
-              ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-              : img
-          }
-        />
+      <Link to={movieDetailsUrl}>
+      <CardMedia
+        sx={styles.media}
+        image={
+          movie.poster_url
+            ? movie.poster_url
+            : movie.poster_path
+            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+            : img
+        }
+      />
       </Link>
       <CardContent>
         <Grid container>
@@ -77,17 +89,24 @@ export default function MovieCard({ movie, action }) {
             </Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
-            </Typography>
+            {displayRuntime ? (
+              <Typography variant="h6" component="p">
+                <AccessTimeIcon fontSize="small" />
+                {"  "} {movie.runtime}{" "}
+              </Typography>
+            ) : (
+              <Typography variant="h6" component="p">
+                <StarRateIcon fontSize="small" />
+                {"  "} {movie.vote_average}{" "}
+              </Typography>
+            )}
           </Grid>
         </Grid>
       </CardContent>
       <CardActions disableSpacing>
         {action(movie)}
 
-        <Link to={`/movies/${movie.id}`}>
+        <Link to={movieDetailsUrl}>
           <Button variant="outlined" size="medium" color="primary">
             More Info ...
           </Button>
