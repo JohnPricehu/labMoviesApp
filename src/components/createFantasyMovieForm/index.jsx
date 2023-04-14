@@ -4,7 +4,7 @@ import './CreateFantasyMovieForm.css';
 import { useNavigate } from "react-router-dom";
 
 
-const CreateFantasyMovieForm = = (props) => {
+const CreateFantasyMovieForm =  (props) => {
   const [title, setTitle] = useState("");
   const [overview, setOverview] = useState("");
   const [genres, setGenres] = useState("");
@@ -18,8 +18,6 @@ const CreateFantasyMovieForm = = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = supabase.auth.currentUser;
-    const userEmail = user ? user.email : "";
 
 
     console.log("User email in handleSubmit:", userEmail);
