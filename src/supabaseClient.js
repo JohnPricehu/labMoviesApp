@@ -228,6 +228,33 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
   
     return { success: true };
   };
+
+  export const getFantasyMovie = async (id) => {
+    const { data, error } = await supabase
+      .from("movies")
+      .select("*")
+      .eq("id", id)
+      .single();
+  
+    if (error) {
+      throw error;
+    }
+  
+    return data;
+  };
+  
+  export const getFantasyMovieActorIds = async (movieId) => {
+    const { data, error } = await supabase
+      .from("movies")
+      .select("actors")
+      .eq("id", movieId);
+  
+    if (error) {
+      throw error;
+    }
+  
+    return data;
+  };
   
   
   
