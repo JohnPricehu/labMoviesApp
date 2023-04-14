@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import { fetchMovies } from "../supabaseClient";
+import { getCreatedFantasyMovies } from "../supabaseClient";
 
 export const FantasyMoviesContext = createContext();
 
@@ -8,7 +8,7 @@ export const FantasyMoviesProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchAndSetMovies = async () => {
-      const { data, error } = await fetchMovies();
+      const { data, error } = await getCreatedFantasyMovies();
       if (data) {
         setMovies(data);
       }

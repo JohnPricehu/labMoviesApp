@@ -170,14 +170,17 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
     }
   }
   
-  export const createFantasyMovie = async (movieData) => {
-    const { data, error } = await supabase.from("movies").insert([movieData]);
+
+  export const createFantasyMovie = async (movieData, userEmail) => {
+    movieData.user_email = userEmail;
+    const { data, error } = await supabase.from("movies").insert(movieData);
     return { data, error };
   };
+  
+  
 
-
-  export const uploadPoster = async (file, userId) => {
-    const fileName = `fantasy/posters/${file.name}`;
+  export const uploadPoster = async (file, userId, userEmail) => {
+    const fileName = `fantasy/posters/${userEmail}/${file.name}`;
     const { data, error } = await supabase.storage
       .from('movie-posters')
       .upload(fileName, file);
@@ -193,22 +196,26 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
   };
   
 
-  export const fetchMovies = async () => {
-    const { data, error } = await supabase.from("movies").select("*");
+  export const getCreatedFantasyMovies = async (userEmail) => {
+    const { data, error, status } = await supabase
+      .from('movies')
+      .select('*')
+      .eq('user_email', userEmail);
   
     if (error) {
-      console.error("Error fetching movies:", error);
-      return { error };
+      console.error('getCreatedFantasyMovies error:', error, 'Status:', status);
     }
   
-    return { data };
+    return { data, error };
   };
+  
 
-  export const deleteMovie = async (movieId, posterUrl) => {
+  export const deleteMovie = async (movieId, userEmail, posterUrl) => {
     const { error } = await supabase
       .from("movies")
       .delete()
-      .eq("id", movieId);
+      .eq("id", movieId)
+      .eq("user_email", userEmail);
   
     if (error) {
       console.error("Error deleting movie:", error);
@@ -219,7 +226,7 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
   
     const { error: deleteError } = await supabase.storage
       .from("movie-posters")
-      .remove([`fantasy/posters/${fileName}`]);
+      .remove([`fantasy/posters/${userEmail}/${fileName}`]);
   
     if (deleteError) {
       console.error("Error deleting movie poster:", deleteError);

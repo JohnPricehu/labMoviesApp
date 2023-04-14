@@ -8,6 +8,7 @@ import ActorFilterUI, {
   nameFilter,
 } from "../components/actorFilterUI";
 import AddToFavouriteActorsIcon from "../components/cardIcons/addToFavouriteActors";
+import Pagination from "../components/pagination";
 
 const nameFiltering = {
   name: "name",
@@ -16,7 +17,18 @@ const nameFiltering = {
 };
 
 const ActorsPage = (props) => {
-  const { data, error, isLoading, isError } = useQuery("actors", getActors);
+  const [page, setPage] = React.useState(1)
+  const { isLoading,
+    isError,
+    error,
+    data,
+    isFetching,
+    isPreviousData,
+  } = useQuery({
+    queryKey: ['actors', page],
+    queryFn: () => getActors(page),
+    keepPreviousData: true
+  });
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [nameFiltering]
@@ -52,6 +64,7 @@ const ActorsPage = (props) => {
         onFilterValuesChange={changeFilterValues}
         nameFilter={filterValues[0].value}
       />
+      <Pagination data={data} page={page} setPage={setPage}/>
     </>
   );
 };

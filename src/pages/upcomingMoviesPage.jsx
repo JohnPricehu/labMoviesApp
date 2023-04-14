@@ -9,6 +9,7 @@ import MovieFilterUI, {
   genreFilter,
 } from "../components/movieFilterUI";
 import AddToPlaylistAddIcon from '../components/cardIcons/addToWatch'
+import Pagination from "../components/pagination";
 
 
 const titleFiltering = {
@@ -23,7 +24,18 @@ const genreFiltering = {
 };
 
 const UpcomingMoviesPage = (props) => {
-  const { data, error, isLoading, isError } = useQuery("discover", getUpcomingMovies);
+  const [page, setPage] = React.useState(1)
+  const { isLoading,
+    isError,
+    error,
+    data,
+    isFetching,
+    isPreviousData,
+  } = useQuery({
+    queryKey: ['upcoming', page],
+    queryFn: () => getUpcomingMovies(page),
+    keepPreviousData: true
+  });
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
@@ -64,6 +76,7 @@ const UpcomingMoviesPage = (props) => {
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
       />
+      <Pagination data={data} page={page} setPage={setPage}/>
     </>
   );
 };

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import supabase, { createFantasyMovie, uploadPoster } from "../../supabaseClient";
 import './CreateFantasyMovieForm.css';
 import { useNavigate } from "react-router-dom";
 
 
-const CreateFantasyMovieForm = () => {
+const CreateFantasyMovieForm = = (props) => {
   const [title, setTitle] = useState("");
   const [overview, setOverview] = useState("");
   const [genres, setGenres] = useState("");
@@ -14,10 +14,16 @@ const CreateFantasyMovieForm = () => {
   const [poster, setPoster] = useState(null);
   const [actors, setActors] = useState([]);
   const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState(props.userEmail);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    const user = supabase.auth.currentUser;
+    const userEmail = user ? user.email : "";
+
+
+    console.log("User email in handleSubmit:", userEmail);
+
     let posterUrl = '';
     if (poster) {
       const { posterUrl: uploadedPosterUrl, error } = await uploadPoster(poster);
@@ -37,17 +43,26 @@ const CreateFantasyMovieForm = () => {
       production_companies: productionCompanies,
       poster_url: posterUrl,
       actors,
+      user_email: userEmail, 
     };
 
-    const { data, error } = await createFantasyMovie(movieData);
+    const { data, error } = await createFantasyMovie(movieData, userEmail);
 
     if (error) {
       console.log("Error adding movie:", error.message);
     } else {
       console.log("Movie added successfully:", data);
+      console.log("User email:", userEmail);
+      console.log("Movie data before sending:", movieData);
       navigate("/fantasy");
     }
   };
+
+  useEffect(() => {
+    if (props.userEmail) {
+      setUserEmail(props.userEmail);
+    }
+  }, [props.userEmail]);
 
   const addActor = () => {
     setActors([...actors, { tmdb_id: "" }]);
