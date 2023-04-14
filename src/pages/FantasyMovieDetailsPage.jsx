@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import { getFantasyMovieDetails } from "../supabaseClient";
 import FantasyTemplateMoviePage from "../components/templateFantasyMoviePage";
-import FantasyMovieDetails from "../components/FantasyMovieDetails";
+import FantasyMovieDetails from "../components/fantasyMovieDetails";
 
 const FantasyMovieDetailsPage = () => {
   const { id: stringId } = useParams();
