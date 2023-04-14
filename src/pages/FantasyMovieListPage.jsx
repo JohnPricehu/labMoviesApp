@@ -6,20 +6,23 @@ import { deleteMovie } from "../supabaseClient";
 import Fab from "@mui/material/Fab";
 import AddBox from "@mui/icons-material/AddBox";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
 const FantasyMovieListPage = () => {
   const { movies, setMovies } = useContext(FantasyMoviesContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleDelete = async (movieId, posterUrl) => {
-    const { success, error } = await deleteMovie(movieId, posterUrl);
-
+    const { success, error } = await deleteMovie(movieId, user.email, posterUrl);
+  
     if (success) {
       setMovies(movies.filter((movie) => movie.id !== movieId));
     } else if (error) {
       console.error("Error deleting movie:", error);
     }
   };
+  
 
   const handleCreateButtonClick = () => {
     navigate("/fantasy/create");

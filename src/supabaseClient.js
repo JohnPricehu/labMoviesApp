@@ -194,7 +194,7 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
     const posterUrl = `${baseUrl}/movie-posters/${fileName}`;
     return { posterUrl };
   };
-  
+
 
   export const getCreatedFantasyMovies = async (userEmail) => {
     const { data, error, status } = await supabase
@@ -209,6 +209,7 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
     return { data, error };
   };
   
+  
 
   export const deleteMovie = async (movieId, userEmail, posterUrl) => {
     const { error } = await supabase
@@ -222,15 +223,17 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
       return { error };
     }
   
-    const fileName = posterUrl.split('/').pop();
+    if (posterUrl) { // 检查posterUrl是否已定义
+      const fileName = posterUrl.split('/').pop();
   
-    const { error: deleteError } = await supabase.storage
-      .from("movie-posters")
-      .remove([`fantasy/posters/${userEmail}/${fileName}`]);
+      const { error: deleteError } = await supabase.storage
+        .from("movie-posters")
+        .remove([`fantasy/posters/${userEmail}/${fileName}`]);
   
-    if (deleteError) {
-      console.error("Error deleting movie poster:", deleteError);
-      return { error: deleteError };
+      if (deleteError) {
+        console.error("Error deleting movie poster:", deleteError);
+        return { error: deleteError };
+      }
     }
   
     return { success: true };

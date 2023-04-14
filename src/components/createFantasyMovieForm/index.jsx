@@ -1,7 +1,8 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect, useContext  } from "react";
 import supabase, { createFantasyMovie, uploadPoster } from "../../supabaseClient";
 import './CreateFantasyMovieForm.css';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
 
 
 const CreateFantasyMovieForm =  (props) => {
@@ -14,12 +15,18 @@ const CreateFantasyMovieForm =  (props) => {
   const [poster, setPoster] = useState(null);
   const [actors, setActors] = useState([]);
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState(props.userEmail);
+  const { user } = useContext(UserContext);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const userEmail = user ? user.email : "";
 
-
+    if (!userEmail) {
+      console.log("User not logged in");
+      return;
+    }
+  
     console.log("User email in handleSubmit:", userEmail);
 
     let posterUrl = '';
@@ -56,11 +63,6 @@ const CreateFantasyMovieForm =  (props) => {
     }
   };
 
-  useEffect(() => {
-    if (props.userEmail) {
-      setUserEmail(props.userEmail);
-    }
-  }, [props.userEmail]);
 
   const addActor = () => {
     setActors([...actors, { tmdb_id: "" }]);
