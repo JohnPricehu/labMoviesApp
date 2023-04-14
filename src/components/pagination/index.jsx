@@ -17,7 +17,7 @@ function Pagination({ data, page, setPage }) {
             onClick={() => handleSetPage(page - 1)}
             disabled={page === 1}
           >
-            Previous Page
+            Previous
           </Button>{' '}
         </div>
         <div className="footerCol">
@@ -32,7 +32,7 @@ function Pagination({ data, page, setPage }) {
               }
             }}
           >
-            Next Page
+            Next
           </Button>
         </div>
       </div>

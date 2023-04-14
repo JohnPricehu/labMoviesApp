@@ -21,21 +21,24 @@ const styles = {
   },
 };
 
+
 const fetchActorDetails = async (actorIds) => {
   const actorDetails = await Promise.all(
     actorIds.map(async (actorId) => {
-      const { data } = await getActor(actorId);
+      const data = await getActor(actorId);
       return data;
     })
   );
   return actorDetails;
 };
 
-const FantasyMovieCastList = ({ movie, actorIds }) => {
+
+const FantasyMovieCastList = ({ actorIds }) => {
   const { isLoading, isError, error, data } = useQuery(
-    ["movie cast", movie, actorIds],
+    ["movie cast", actorIds],
     () => fetchActorDetails(actorIds)
   );
+  
 
   if (isLoading) {
     return <Spinner />;

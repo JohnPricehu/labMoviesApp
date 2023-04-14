@@ -20,7 +20,8 @@ const styles = {
   },
 };
 
-const FantasyMovieDetails = ({ movie, actors }) => {
+const FantasyMovieDetails = ({ movie, actorIds }) => {
+
   return (
     <>
       <Typography variant="h5" component="h3">
@@ -31,26 +32,21 @@ const FantasyMovieDetails = ({ movie, actors }) => {
         {movie.overview}
       </Typography>
 
-      <Paper component="ul" sx={styles.chipSet}>
-        <li>
-          <Chip label="Genres" sx={styles.chipLabel} color="primary" />
-        </li>
-        {movie.genres.map((g) => (
-          <li key={g.name}>
-            <Chip label={g.name} />
-          </li>
-        ))}
-      </Paper>
+
       <Paper component="ul" sx={styles.chipSet}>
         <Chip label={`Released: ${movie.release_date}`} />
+      </Paper>
+      <Paper component="ul" sx={styles.chipSet}>
         <Chip label={`Runtime: ${movie.runtime} min.`} />
+      </Paper>
+      <Paper component="ul" sx={styles.chipSet}>
         <Chip label={`Production Companies: ${movie.production_companies}`} />
       </Paper>
       <Paper>
         <Typography variant="h6" component="h6" padding={2}>
           Cast
         </Typography>
-        <FantasyMovieCastList cast={actors} />
+        <FantasyMovieCastList actorIds={actorIds} />
       </Paper>
     </>
   );

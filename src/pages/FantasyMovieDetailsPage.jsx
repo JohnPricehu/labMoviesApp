@@ -7,12 +7,21 @@ import FantasyTemplateMoviePage from "../components/templateFantasyMoviePage";
 import FantasyMovieDetails from "../components/FantasyMovieDetails";
 
 const FantasyMovieDetailsPage = () => {
-  const { id } = useParams();
+  const { id: stringId } = useParams();
+  const id = parseInt(stringId);
+
+  // If the parsed ID is not a valid number, display an error message.
+  if (isNaN(id)) {
+    return <h1>Invalid movie ID</h1>;
+  }
+
 
   const { data, error, isLoading, isError } = useQuery(
-    ["fantasyMovieDetails", { id: id }],
-    getFantasyMovieDetails
+    ["fantasyMovieDetails", id],
+    () => getFantasyMovieDetails(["fantasyMovieDetails", id])
   );
+  
+  
 
   if (isLoading) {
     return <Spinner />;

@@ -120,21 +120,18 @@ export const getMovies = (page = 1) => {
      });
   };
 
-  export const getActor = (args) => {
-    const [, idPart] = args.queryKey;
-    const { id } = idPart;
-    return fetch(
-      `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error(response.json().message);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      throw error
-   });
+  export const getActor = async (actorId) => {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/person/${actorId}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
+    return response.json();
   };
+  
+  
 
   export const getActorImages = ({ queryKey }) => {
     const [, idPart] = queryKey;

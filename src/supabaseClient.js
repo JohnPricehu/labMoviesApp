@@ -257,20 +257,30 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
     const { data, error } = await supabase
       .from("movies")
       .select("actors")
-      .eq("id", movieId);
+      .eq("id", movieId)
+      .single();
   
     if (error) {
       throw error;
     }
   
-    return data;
+    if (!data || !data.actors) {
+      return [];
+    }
+  
+    // Extract the tmdb_id values and return them as an array of integers
+    return data.actors.map((actor) => parseInt(actor.tmdb_id));
   };
   
-  export const getFantasyMovieDetails = async (id) => {
+  
+  
+  export const getFantasyMovieDetails = async (queryKey) => {
+    const [, id] = queryKey;
     const movie = await getFantasyMovie(id);
     const actorIds = await getFantasyMovieActorIds(id);
     return { movie, actorIds };
   };
+  
   
   
   
