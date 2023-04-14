@@ -45,9 +45,10 @@ export default function MovieCard({
   
   const handleDelete = async () => {
     if (onDelete) {
-      onDelete(movie.id);
+      onDelete(movie.id, movie.poster_url);
     }
   };
+  
 
   useEffect(() => {
     const fetchFavouriteStatus = async () => {

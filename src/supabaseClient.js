@@ -177,7 +177,7 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
 
 
   export const uploadPoster = async (file, userId) => {
-    const fileName = `fantasy/posters/${userId}/${Date.now()}-${file.name}`;
+    const fileName = `fantasy/posters/${file.name}`;
     const { data, error } = await supabase.storage
       .from('movie-posters')
       .upload(fileName, file);
@@ -204,7 +204,7 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
     return { data };
   };
 
-  export const deleteMovie = async (movieId) => {
+  export const deleteMovie = async (movieId, posterUrl) => {
     const { error } = await supabase
       .from("movies")
       .delete()
@@ -215,9 +215,11 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
       return { error };
     }
   
+    const fileName = posterUrl.split('/').pop();
+  
     const { error: deleteError } = await supabase.storage
       .from("movie-posters")
-      .remove([`fantasy/posters/${movieId}`]);
+      .remove([`fantasy/posters/${fileName}`]);
   
     if (deleteError) {
       console.error("Error deleting movie poster:", deleteError);
@@ -226,6 +228,7 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
   
     return { success: true };
   };
+  
   
   
   

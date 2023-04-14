@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import supabase, { createFantasyMovie, uploadPoster } from "../../supabaseClient";
 import './CreateFantasyMovieForm.css';
+import { useNavigate } from "react-router-dom";
 
 
 const CreateFantasyMovieForm = () => {
@@ -12,6 +13,7 @@ const CreateFantasyMovieForm = () => {
   const [productionCompanies, setProductionCompanies] = useState("");
   const [poster, setPoster] = useState(null);
   const [actors, setActors] = useState([]);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,6 +45,7 @@ const CreateFantasyMovieForm = () => {
       console.log("Error adding movie:", error.message);
     } else {
       console.log("Movie added successfully:", data);
+      navigate("/fantasy");
     }
   };
 
