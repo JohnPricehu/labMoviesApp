@@ -223,7 +223,7 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
       return { error };
     }
   
-    if (posterUrl) { // 检查posterUrl是否已定义
+    if (posterUrl) { // posterUrl is null if the movie was created without a poster
       const fileName = posterUrl.split('/').pop();
   
       const { error: deleteError } = await supabase.storage
@@ -264,6 +264,12 @@ export const removeActorFromFavourites = async (userEmail, actorId) => {
     }
   
     return data;
+  };
+  
+  export const getFantasyMovieDetails = async (id) => {
+    const movie = await getFantasyMovie(id);
+    const actorIds = await getFantasyMovieActorIds(id);
+    return { movie, actorIds };
   };
   
   

@@ -1,35 +1,18 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import FantasyMovieDetails from "../components/fantasyMovieDetails";
-import PageTemplate from "../components/templateMoviePage";
-import { getFantasyMovie, getFantasyMovieActorIds } from "../supabaseClient";
-import { getActor } from "../api/tmdb-api";
 import { useQuery } from "react-query";
-import Spinner from '../components/spinner';
+import Spinner from "../components/spinner";
+import { getFantasyMovieDetails } from "../supabaseClient";
+import FantasyTemplateMoviePage from "../components/templateFantasyMoviePage";
+import FantasyMovieDetails from "../components/FantasyMovieDetails";
 
 const FantasyMovieDetailsPage = () => {
-const { id } = useParams();
-const movieId = parseInt(id, 10);
+  const { id } = useParams();
 
-  const { data: actorIds, isSuccess: actorIdsSuccess } = useQuery(
-    ["actorIds", { movieId }],
-    getFantasyMovieActorIds
+  const { data, error, isLoading, isError } = useQuery(
+    ["fantasyMovieDetails", { id: id }],
+    getFantasyMovieDetails
   );
-
-
-  const { data: movie, error, isLoading, isError } = useQuery(
-    ["fantasyMovie", { id: id }],
-    getFantasyMovie
-  );
-
-
-  const actorDetailsQueries = actorIdsSuccess
-    ? actorIds.map((actorIdObj) =>
-        useQuery(["actor", { id: actorIdObj.tmdb_actor_id }], getActor)
-      )
-    : [];
-
-  const actorDetails = actorDetailsQueries.map((query) => query.data);
 
   if (isLoading) {
     return <Spinner />;
@@ -39,13 +22,15 @@ const movieId = parseInt(id, 10);
     return <h1>{error.message}</h1>;
   }
 
+  const { movie, actorIds } = data;
+
   return (
     <>
       {movie ? (
         <>
-          <PageTemplate movie={movie}>
-            <FantasyMovieDetails movie={movie} actors={actorDetails} />
-          </PageTemplate>
+          <FantasyTemplateMoviePage movie={movie}>
+            <FantasyMovieDetails movie={movie} actorIds={actorIds} />
+          </FantasyTemplateMoviePage>
         </>
       ) : (
         <p>Waiting for movie details</p>

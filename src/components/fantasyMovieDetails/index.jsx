@@ -3,7 +3,7 @@ import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Spinner from "../spinner";
-import MovieCastList from "../movieCast";
+import FantasyMovieCastList from "../fantasyMovieCastList";
 
 const styles = {
   chipSet: {
@@ -50,7 +50,7 @@ const FantasyMovieDetails = ({ movie, actors }) => {
         <Typography variant="h6" component="h6" padding={2}>
           Cast
         </Typography>
-        <MovieCastList cast={actors} />
+        <FantasyMovieCastList cast={actors} />
       </Paper>
     </>
   );
