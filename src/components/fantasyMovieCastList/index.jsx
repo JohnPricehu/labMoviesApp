@@ -24,13 +24,13 @@ const styles = {
 
 const fetchActorDetails = async (actorIds) => {
   const actorDetails = await Promise.all(
-    actorIds.map(async (actorId) => {
-      const data = await getActor(actorId);
-      return data;
-    })
+  actorIds.map(async (actorId) => {
+  const data = await getActor({queryKey: ["movie cast", {id: actorId}]});
+  return data;
+  })
   );
   return actorDetails;
-};
+  };
 
 
 const FantasyMovieCastList = ({ actorIds }) => {
