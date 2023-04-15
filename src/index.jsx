@@ -51,11 +51,11 @@ const App = () => {
                 <Route path="*" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
                 <Route path="/actors" element={<ActorsPage />} />                
                 <Route element={<ProtectedRoute />}>
                   <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
-                  <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
-                  <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+                  <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />                  
                   <Route path="/movies/mustWatches" element={<MustWatchMoviesPage />} />
                   <Route path="/movies/:id" element={<MoviePage />} />
                   <Route path="/reviews/:id" element={<MovieReviewPage/>} />
