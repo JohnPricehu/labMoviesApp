@@ -24,6 +24,9 @@ import CreateFantasyMoviePage from "./pages/createFantasyMoviePage";
 import { FantasyMoviesProvider } from "./contexts/FantasyMoviesContext";
 import FantasyMovieListPage from "./pages/FantasyMovieListPage";
 import FantasyMovieDetailsPage from "./pages/FantasyMovieDetailsPage";
+import AuthContextProvider from './contexts/authContext';
+import SignUpPage from "./pages/signUpPage";
+import LoginPage from "./pages/loginPage";
 
 
 const queryClient = new QueryClient({
@@ -41,35 +44,38 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-      <UserProvider>
-        <SiteHeader />      {/* New Header  */}
-          <MoviesContextProvider>
-           <ActorsContextProvider>
-           <FantasyMoviesProvider>      
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="*" element={<Navigate to="/login" />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
-                <Route path="/actors" element={<ActorsPage />} />                
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
-                  <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />                  
-                  <Route path="/movies/mustWatches" element={<MustWatchMoviesPage />} />
-                  <Route path="/movies/:id" element={<MoviePage />} />
-                  <Route path="/reviews/:id" element={<MovieReviewPage/>} />
-                  <Route path="/actors/:id" element={<ActorPage />} />
-                  <Route path="/actors/favourites" element={<FavouriteActorsPage />} />
-                  <Route path="/fantasy" element={<FantasyMovieListPage />} />
-                  <Route path="/fantasy/create" element={<CreateFantasyMoviePage />} />                  
-                  <Route path="/fantasy/:id" element={<FantasyMovieDetailsPage />} />
-                </Route>
-              </Routes> 
-            </FantasyMoviesProvider>
-            </ActorsContextProvider>        
-          </MoviesContextProvider>
-        </UserProvider>
+        <AuthContextProvider>
+          <UserProvider>
+            <SiteHeader />      {/* New Header  */}
+              <MoviesContextProvider>
+              <ActorsContextProvider>
+              <FantasyMoviesProvider>      
+                  <Routes>
+                    <Route path="/l" element={<LoginPage />} />
+                    <Route path="/s" element={<SignUpPage />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+                    <Route path="/actors" element={<ActorsPage />} />                
+                    <Route element={<ProtectedRoute />}>
+                      <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
+                      <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />                  
+                      <Route path="/movies/mustWatches" element={<MustWatchMoviesPage />} />
+                      <Route path="/movies/:id" element={<MoviePage />} />
+                      <Route path="/reviews/:id" element={<MovieReviewPage/>} />
+                      <Route path="/actors/:id" element={<ActorPage />} />
+                      <Route path="/actors/favourites" element={<FavouriteActorsPage />} />
+                      <Route path="/fantasy" element={<FantasyMovieListPage />} />
+                      <Route path="/fantasy/create" element={<CreateFantasyMoviePage />} />                  
+                      <Route path="/fantasy/:id" element={<FantasyMovieDetailsPage />} />
+                    </Route>
+                  </Routes> 
+                </FantasyMoviesProvider>
+                </ActorsContextProvider>        
+              </MoviesContextProvider>
+          </UserProvider>
+        </AuthContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

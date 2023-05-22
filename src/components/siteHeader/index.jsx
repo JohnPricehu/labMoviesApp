@@ -14,6 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { UserContext } from "../../contexts/UserContext";
 import supabase from "../../supabaseClient";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { AuthContext } from "../../contexts/authContext";
 
 const styles = {
   title: {
@@ -34,8 +35,10 @@ const SiteHeader = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
   const { user } = useContext(UserContext);
+  const context = useContext(AuthContext);
 
   const menuOptions = [
+    { label: "Login", path: "/l" },
     { label: "Home", path: "/" },
     { label: "Favorite Movies", path: "/movies/favourites" },
     { label: "Upcoming Movies", path: "/movies/upcoming" },
@@ -73,6 +76,11 @@ const SiteHeader = () => {
               Welcome {user.email}
             </Typography>
           )}
+          {context.isAuthenticated && (
+                <IconButton color="inherit" onClick={() => context.signout()}>
+                  <ExitToAppIcon />
+                </IconButton>
+              )}
           {isMobile ? (
             <>
               <IconButton
